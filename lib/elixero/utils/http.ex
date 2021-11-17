@@ -10,8 +10,11 @@ defmodule EliXero.Utils.Http do
 
   def get(url, authorisation_header, tenant_id) do
 
+    :hackney_trace.enable(:max, :io)
+
     {:ok, response} = HTTPoison.get url, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
 
+    :hackney_trace.disable()
     response
   end
 
