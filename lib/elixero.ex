@@ -49,7 +49,7 @@ defmodule EliXero do
     end
   end
 
-  defp create_client(access_token) do
+  def create_client(access_token) do
     case(Application.get_env(:elixero, :app_type)) do
       :private -> %EliXero.Client{app_type: :private, access_token: access_token}
       :public -> %EliXero.Client{app_type: :public, access_token: access_token}
