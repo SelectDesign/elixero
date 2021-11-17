@@ -47,7 +47,7 @@ defmodule EliXero.Private do
 
     header = "Bearer " <> client.access_token
 
-    EliXero.Utils.Http.delete(url, header)
+    EliXero.Utils.Http.delete(url, header, client.tenant_id)
   end
 
   def upload_multipart(client, resource, api_type, path_to_file, name) do

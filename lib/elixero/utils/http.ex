@@ -4,24 +4,28 @@ defmodule EliXero.Utils.Http do
 
   @connection_timeout 330000
 
-  def options(tenant_id) do
-    [recv_timeout: @connection_timeout, params: %{"Xero-tenant-id" => tenant_id}]
+  def options() do
+    [recv_timeout: @connection_timeout]
+  end
+
+  def headers(authorisation_header, tenant_id) do
+    [{"Authorization", authorisation_header}, {"Accept", @accept}, {"Xero-tenant-id", tenant_id}]
   end
 
   def get(url, authorisation_header, tenant_id) do
 
     :hackney_trace.enable(:max, :io)
 
-    {:ok, response} = HTTPoison.get url, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.get url, headers(authorisation_header, tenant_id), options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     :hackney_trace.disable()
     response
   end
 
   def get(url, authorisation_header, tenant_id, extra_headers) do
-    headers = [{"Authorization", authorisation_header}, {"Accept", @accept}] ++ extra_headers
+    headers = headers(authorisation_header, tenant_id) ++ extra_headers
 
-    {:ok, response} = HTTPoison.get url, headers, options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.get url, headers, options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     response
   end
@@ -29,7 +33,7 @@ defmodule EliXero.Utils.Http do
   def put(url, authorisation_header, tenant_id, data_map) do
     {_, payload} = Poison.encode(data_map)
 
-    {:ok, response} = HTTPoison.put url, payload, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.put url, payload, headers(authorisation_header, tenant_id), options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     response
   end
@@ -37,13 +41,13 @@ defmodule EliXero.Utils.Http do
   def post(url, authorisation_header, tenant_id, data_map) do
     {_, payload} = Poison.encode(data_map)
 
-    {:ok, response} = HTTPoison.post url, payload, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.post url, payload, headers(authorisation_header, tenant_id), options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     response
   end
 
   def delete(url, authorisation_header, tenant_id) do
-    {:ok, response} = HTTPoison.delete url, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.delete url, headers(authorisation_header, tenant_id), options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     response
   end
@@ -53,13 +57,13 @@ defmodule EliXero.Utils.Http do
     # Hackney sets this to be the filename from the path of the file. We need to override it
     content_disposition_overload = "form-data; filename=\"" <> name <> "\""
 
-    {:ok, response} = HTTPoison.post url, {:multipart, [{:file, path_to_file, [{"Content-Disposition", content_disposition_overload}]}]}, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.post url, {:multipart, [{:file, path_to_file, [{"Content-Disposition", content_disposition_overload}]}]}, headers(authorisation_header, tenant_id), options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     handle_response(response)
   end
 
   def post_file(url, authorisation_header, tenant_id, path_to_file) do
-    {:ok, response} = HTTPoison.post url, {:file, path_to_file}, [{"Authorization", authorisation_header}, {"Accept", @accept}], options(tenant_id) # ++ [{:proxy, "127.0.0.1:8888"}]
+    {:ok, response} = HTTPoison.post url, {:file, path_to_file}, headers(authorisation_header, tenant_id), options() # ++ [{:proxy, "127.0.0.1:8888"}]
 
     response
   end
