@@ -78,8 +78,6 @@ defmodule EliXero.Utils.Oauth do
   defp signature_method() do
     case(application_type()) do
       :private -> "RSA-SHA1"
-      :public -> "HMAC-SHA1"
-      :partner -> "RSA-SHA1"
     end
   end
 
