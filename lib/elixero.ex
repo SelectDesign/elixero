@@ -11,7 +11,7 @@ defmodule EliXero do
       %{"http_status_code" => 200}  -> Map.merge(response, %{"auth_url" => EliXero.Utils.Urls.authorise(response["oauth_token"])})
       _                             -> response
     end
-  end  
+  end
 
   def create_client do
     case(Application.get_env(:elixero, :app_type)) do
@@ -22,7 +22,7 @@ defmodule EliXero do
   end
 
   def create_client(request_token, verifier) do
-    response = 
+    response =
       case(Application.get_env(:elixero, :app_type)) do
         :private -> raise "Approving an access token is not applicable with Private applications"
         :public -> EliXero.Public.approve_access_token(request_token, verifier)
@@ -32,7 +32,7 @@ defmodule EliXero do
     case response do
       %{"http_status_code" => 200}  -> create_client response
       _                             -> response
-    end 
+    end
   end
 
   def renew_client(client) do
@@ -46,12 +46,12 @@ defmodule EliXero do
     case response do
       %{"http_status_code" => 200}  -> create_client response
       _                             -> response
-    end 
+    end
   end
 
   defp create_client(access_token) do
     case(Application.get_env(:elixero, :app_type)) do
-      :private -> raise "Nope. No need for access token"
+      :private -> %EliXero.Client{app_type: :private, access_token: access_token}
       :public -> %EliXero.Client{app_type: :public, access_token: access_token}
       :partner -> %EliXero.Client{app_type: :partner, access_token: access_token}
     end
