@@ -2,17 +2,19 @@ defmodule EliXero.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :elixero, version: "0.1.1", elixir: "~> 1.3", description: description(), package: package(), deps: deps()]
+    [app: :elixero, version: "0.1.1", elixir: "~> 1.14", description: description(), package: package(), deps: deps()]
   end
 
   def application do
-    [applications: [:logger, :httpoison]]
+    [extra_applications: [:crypto, :httpoison, :logger, :public_key]]
   end
 
   defp deps do
     [
       {:httpoison, "~> 0.9"},
-      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:ex_doc, "0.36.1", only: :dev, runtime: false},
+      # Earmark Parser 1.4.46 requires Elixir 1.15.
+      {:earmark_parser, "1.4.45", only: :dev, runtime: false},
       {:poison, "~> 3.0"},
       {:ecto, "~> 3.0"}
     ]
