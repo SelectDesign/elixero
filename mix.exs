@@ -16,7 +16,8 @@ defmodule EliXero.Mixfile do
       # Earmark Parser 1.4.46 requires Elixir 1.15.
       {:earmark_parser, "1.4.45", only: :dev, runtime: false},
       {:poison, "~> 3.0"},
-      {:ecto, "~> 3.0"}
+      {:ecto, "~> 3.0"},
+      {:sobelow, "~> 0.15", only: [:dev, :test], runtime: false, warn_if_outdated: true}
     ]
   end
 
