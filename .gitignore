@@ -18,6 +18,3 @@ erl_crash.dump
 
 # Don't add the xero_app_config as this will contain sensitive data
 */xero_app_config.exs
-
-# The others
-mix.lock

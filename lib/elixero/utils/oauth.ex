@@ -55,7 +55,7 @@ defmodule EliXero.Utils.Oauth do
           Enum.at(uri_parts, 1)
           |> URI.decode_query()
           |> Enum.map(fn {key, value} ->
-            {String.to_atom(key), URI.encode_www_form(value) |> String.replace("+", "%20")}
+            {key, URI.encode_www_form(value) |> String.replace("+", "%20")}
           end)
 
         params ++ query_params
@@ -89,6 +89,8 @@ defmodule EliXero.Utils.Oauth do
     end
   end
 
+  # The private key path comes from trusted application configuration, not request input.
+  # sobelow_skip ["Traversal.FileModule"]
   defp rsa_sha1_sign(base_string) do
     hashed = :crypto.hash(:sha, base_string)
 
