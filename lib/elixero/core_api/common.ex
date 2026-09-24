@@ -5,7 +5,7 @@ defmodule EliXero.CoreApi.Common do
     EliXero.Private.find(client, resource, @api_type)
   end
 
-  def find(client, resource,  identifier) do
+  def find(client, resource, identifier) do
     resource = resource <> "/" <> identifier
 
     find(client, resource)
@@ -16,7 +16,7 @@ defmodule EliXero.CoreApi.Common do
 
     extra_headers =
       unless filter[:modified_since] == nil do
-        [ {"if-modified-since", filter[:modified_since]} ]
+        [{"if-modified-since", filter[:modified_since]}]
       else
         []
       end

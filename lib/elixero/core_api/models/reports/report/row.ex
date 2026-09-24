@@ -18,4 +18,3 @@ defmodule EliXero.CoreApi.Models.Reports.Report.Row do
     |> cast_embed(:Rows)
   end
 end
-

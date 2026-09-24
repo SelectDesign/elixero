@@ -22,7 +22,7 @@ defmodule EliXero.CoreApi.Attachments do
 
     case client.app_type do
       :private -> EliXero.Private.upload_attachment(client, resource, @api_type, file_path, filename, include_online)
-    end |> EliXero.CoreApi.Utils.ResponseHandler.handle_response(@model_module)
-
+    end
+    |> EliXero.CoreApi.Utils.ResponseHandler.handle_response(@model_module)
   end
 end
