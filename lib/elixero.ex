@@ -6,8 +6,11 @@ defmodule EliXero do
       end
 
     case response do
-      %{"http_status_code" => 200}  -> Map.merge(response, %{"auth_url" => EliXero.Utils.Urls.authorise(response["oauth_token"])})
-      _                             -> response
+      %{"http_status_code" => 200} ->
+        Map.merge(response, %{"auth_url" => EliXero.Utils.Urls.authorise(response["oauth_token"])})
+
+      _ ->
+        response
     end
   end
 

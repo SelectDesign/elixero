@@ -1,5 +1,4 @@
 defmodule EliXero.Private do
-
   def find(client, resource, api_type) do
     url = EliXero.Utils.Urls.api(resource, api_type)
 
@@ -23,6 +22,7 @@ defmodule EliXero.Private do
       end
 
     header = "Bearer " <> client.access_token
+
     case(method) do
       "PUT" -> EliXero.Utils.Http.put(url, header, client.tenant_id, data_map)
     end
@@ -37,6 +37,7 @@ defmodule EliXero.Private do
       end
 
     header = "Bearer " <> client.access_token
+
     case(method) do
       "POST" -> EliXero.Utils.Http.post(url, header, client.tenant_id, data_map)
     end
@@ -60,10 +61,19 @@ defmodule EliXero.Private do
 
   def upload_attachment(client, resource, api_type, path_to_file, filename, include_online) do
     url = EliXero.Utils.Urls.api(resource, api_type)
-    url_for_signing = url <> "/" <> String.replace(filename, " ", "%20") <> "?includeonline=" <> ( if include_online, do: "true", else: "false") # Spaces must be %20 not +
+    # Spaces must be %20 not +
+    url_for_signing =
+      url <>
+        "/" <> String.replace(filename, " ", "%20") <> "?includeonline=" <> if include_online, do: "true", else: "false"
+
     header = "Bearer " <> client.access_token
 
-    url = url <> "/" <> URI.encode(filename, &URI.char_unreserved?(&1)) <> "?includeonline=" <> ( if include_online, do: "true", else: "false")
+    url =
+      url <>
+        "/" <>
+        URI.encode(filename, &URI.char_unreserved?(&1)) <>
+        "?includeonline=" <> if include_online, do: "true", else: "false"
+
     EliXero.Utils.Http.post_file(url, header, client.tenant_id, path_to_file)
   end
 end
