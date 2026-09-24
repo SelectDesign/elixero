@@ -61,10 +61,6 @@ defmodule EliXero.Private do
 
   def upload_attachment(client, resource, api_type, path_to_file, filename, include_online) do
     url = EliXero.Utils.Urls.api(resource, api_type)
-    # Spaces must be %20 not +
-    url_for_signing =
-      url <>
-        "/" <> String.replace(filename, " ", "%20") <> "?includeonline=" <> if include_online, do: "true", else: "false"
 
     header = "Bearer " <> client.access_token
 
