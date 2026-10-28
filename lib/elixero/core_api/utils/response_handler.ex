@@ -19,7 +19,7 @@ defmodule EliXero.CoreApi.Utils.ResponseHandler do
     end
   end
 
-  # Skip the sobelow atom exhaustion check because the response is coming from a error response from Xero and there
+  # Skip the sobelow atom exhaustion check because the response is coming from an error response from Xero and there
   # are only so many response types it can send.
   # sobelow_skip ["DOS.DecodeAtoms"]
   defp transform(json, module, :bad_request) do
@@ -30,7 +30,7 @@ defmodule EliXero.CoreApi.Utils.ResponseHandler do
     end
   end
 
-  # Skip the sobelow atom exhaustion check because the response is coming from a error response from Xero and there
+  # Skip the sobelow atom exhaustion check because the response is coming from an error response from Xero and there
   # are only so many response types it can send.
   # sobelow_skip ["DOS.DecodeAtoms"]
   defp transform_to_api_exception(json) do
