@@ -9,6 +9,9 @@ defmodule EliXero.CoreApi.Utils.ResponseHandler do
     end
   end
 
+  # Skip the sobelow atom exhaustion check because the response is coming from a successful request to Xero and there
+  # are only so many response types it can send.
+  # sobelow_skip ["DOS.DecodeAtoms"]
   defp transform(json, module, :ok) do
     case Poison.decode(json, keys: :atoms) do
       {:ok, data} -> module.from_map(data)
@@ -16,6 +19,9 @@ defmodule EliXero.CoreApi.Utils.ResponseHandler do
     end
   end
 
+  # Skip the sobelow atom exhaustion check because the response is coming from an error response from Xero and there
+  # are only so many response types it can send.
+  # sobelow_skip ["DOS.DecodeAtoms"]
   defp transform(json, module, :bad_request) do
     case Poison.decode(json, keys: :atoms) do
       {:ok, %{:ErrorNumber => 10} = data} -> module.from_validation_exception(data)
@@ -24,6 +30,9 @@ defmodule EliXero.CoreApi.Utils.ResponseHandler do
     end
   end
 
+  # Skip the sobelow atom exhaustion check because the response is coming from an error response from Xero and there
+  # are only so many response types it can send.
+  # sobelow_skip ["DOS.DecodeAtoms"]
   defp transform_to_api_exception(json) do
     case Poison.decode(json, keys: :atoms) do
       {:ok, data} -> EliXero.CoreApi.Models.Exceptions.ApiException.from_map(data)
